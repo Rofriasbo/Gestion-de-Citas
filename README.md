@@ -1,16 +1,26 @@
-# Gestion-de-Citas
+Aquí tienes el texto formateado como un archivo README.md estándar, usando la sintaxis de Markdown para títulos, listas y bloques de código.
+
+Gestión de Citas
 U3. Práctica 1. Control CITAS
+
 Dependencias del Proyecto
 Este proyecto utiliza tres librerías principales para gestionar la funcionalidad de mapas y geolocalización.
 
 Instalación
 Asegúrate de que estas líneas estén presentes en tu archivo pubspec.yaml:
+
+YAML
+
 dependencies:
   flutter:
     sdk: flutter
   flutter_map: ^7.0.2
   latlong2: ^0.9.1
   geocoding: ^4.0.0
+Luego, instala las dependencias ejecutando el siguiente comando en tu terminal:
+
+Bash
+
 flutter pub get
 Librerías Utilizadas
 Aquí se detalla para qué se usa cada librería en este proyecto:
@@ -53,6 +63,7 @@ Toma la calle y la colonia que el usuario escribe (ej: "Av. México" y "Centro")
 Llama a la función locationFromAddress(...) para convertir esa dirección de texto en coordenadas LatLng (latitud y longitud).
 
 Esas coordenadas son las que se guardan en la base de datos para que el marcador "Otro" (azul) sepa dónde dibujarse en el mapa.
+
 4. OpenStreetMap (OSM) 🌍
 A diferencia de las otras, esta no es una librería de Flutter, sino el proveedor de datos del mapa. Es el servicio que nos da la imagen del mapa mundial.
 
@@ -70,5 +81,4 @@ flutter_map (la librería) se conecta a esta URL de OpenStreetMap para descargar
 
 Es lo que permite al usuario ver las calles, edificios y geografía del mundo.
 
-Es una alternativa gratuita y de código abierto a otros servicios como Google Maps, y no requiere una API Key (llave de acceso) para este tipo of uso.
-  
+Es una alternativa gratuita y de código abierto a otros servicios como Google Maps, y no requiere una API Key (llave de acceso) para este tipo de uso.
