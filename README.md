@@ -8,7 +8,9 @@ Este proyecto utiliza tres librerías principales para gestionar la funcionalida
 Instalación
 Asegúrate de que estas líneas estén presentes en tu archivo pubspec.yaml:
 
+
 YAML
+
 
 dependencies:
   flutter:
@@ -18,9 +20,13 @@ dependencies:
   geocoding: ^4.0.0
 Luego, instala las dependencias ejecutando el siguiente comando en tu terminal:
 
+
 Bash
 
+
 flutter pub get
+
+
 Librerías Utilizadas
 Aquí se detalla para qué se usa cada librería en este proyecto:
 
