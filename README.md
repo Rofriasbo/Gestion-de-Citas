@@ -1,4 +1,3 @@
-Aquí tienes el texto formateado como un archivo README.md estándar, usando la sintaxis de Markdown para títulos, listas y bloques de código.
 
 Gestión de Citas
 U3. Práctica 1. Control CITAS
