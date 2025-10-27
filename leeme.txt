@@ -1,0 +1,23 @@
+Necesitas instalar estas 3 librerías para que los mapas funcionen. Cada una hace un trabajo diferente:
+
+flutter_map: Es el paquete principal para mostrar el mapa 🗺️ en la pantalla.
+
+latlong2: Ayuda a flutter_map a entender las coordenadas (Latitud y Longitud). La necesitas para poner los pines 📍 en el lugar correcto.
+
+geocoding: Convierte una dirección de texto 🏠 (como "Av. México, Centro") en coordenadas. Se usa en el formulario de "Insertar Cita" cuando eliges "Otro".
+
+Cómo Instalar:
+Asegúrate de que tu archivo pubspec.yaml tenga estas líneas:
+
+YAML
+
+dependencies:
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
+  geocoding: ^4.0.0
+
+En tu terminal, corre el comando:
+
+Bash
+
+flutter pub get
