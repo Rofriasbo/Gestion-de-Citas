@@ -21,3 +21,6 @@ En tu terminal, corre el comando:
 Bash
 
 flutter pub get
+
+Utilizar los modelos de cita ya que se modifco para el uso de latitudes y longitudes 
+Los lugares de las citas
