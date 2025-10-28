@@ -26,6 +26,8 @@ Bash
 
 flutter pub get
 
+Utilizar los modelos de cita ya que se modifco para el uso de latitudes y longitudes de
+Los lugares de las citas
 
 Librerías Utilizadas
 Aquí se detalla para qué se usa cada librería en este proyecto:
