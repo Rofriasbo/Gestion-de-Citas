@@ -113,7 +113,7 @@ class _App02State extends State<App02> {
   List<Marker> _marcadores = [];
   final MapController _mapController = MapController();
 
-  final String _appVersion = "1.0.0"; // Variable ahora declarada
+  final String _appVersion = "1.0.0";
 
   @override
   void initState() {
@@ -278,7 +278,7 @@ class _App02State extends State<App02> {
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              style: TextButton.styleFrom(foregroundColor: _primaryColor), // Color primario para aceptar
+              style: TextButton.styleFrom(foregroundColor: _primaryColor),
               child: const Text("Aceptar"),
             ),
           ],
@@ -298,11 +298,11 @@ class _App02State extends State<App02> {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: const Text("Información Técnica"),
-          content: SingleChildScrollView( // Para asegurar que quepa en pantallas pequeñas
+          content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 const Text("Versión de la App:", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text(_appVersion), // Usando la variable _appVersion
+                Text(_appVersion),
                 const SizedBox(height: 10),
                 const Text("APIs/Paquetes Utilizados:", style: TextStyle(fontWeight: FontWeight.bold)),
                 const Text("- flutter_map (Mapas)"),
@@ -466,7 +466,7 @@ class _App02State extends State<App02> {
                       );
                     }),
                     _buildDrawerItem(Icons.code_outlined, "Recursos Técnicos", () {
-                      _mostrarConfirmacionRecursos(); // Llama a la función del diálogo
+                      _mostrarConfirmacionRecursos();
                     }),
                   ],
                 ),
@@ -478,7 +478,6 @@ class _App02State extends State<App02> {
                 _cargarCitas();
               }),
               _buildDrawerItem(Icons.logout_outlined, "Salir", () {
-                // Lógica de salida
               }),
               const SizedBox(height: 20),
             ],
@@ -522,10 +521,6 @@ class _App02State extends State<App02> {
     );
   }
 }
-
-// =========================================================================
-// =================== PÁGINAS DE PERSONAS =================================
-// =========================================================================
 
 class InsertarPersonaPage extends StatefulWidget {
   final Persona? personaAEditar;
@@ -839,10 +834,6 @@ class _EliminarPersonaPageState extends State<EliminarPersonaPage> {
     );
   }
 }
-
-// =========================================================================
-// =================== PÁGINAS DE CITAS ====================================
-// =========================================================================
 
 class InsertarCitaPage extends StatefulWidget {
   final Map<String, dynamic>? citaAEditar;
@@ -1219,7 +1210,6 @@ class _InsertarCitaPageState extends State<InsertarCitaPage> {
                         } else if (!_esEdicion) {
                           throw Exception("Debe especificar Colonia y Calle para un lugar 'Otro'.");
                         } else {
-                          // Si es edición y no se provee nueva dirección, reusar las coords existentes
                           latitud = widget.citaAEditar!['LATITUD'] ?? _defaultCoords.latitude;
                           longitud = widget.citaAEditar!['LONGITUD'] ?? _defaultCoords.longitude;
                           debugPrint("Reusando coordenadas existentes para 'Otro': $latitud, $longitud");
@@ -1291,14 +1281,11 @@ class MostrarCitasPage extends StatefulWidget {
 }
 
 class _MostrarCitasPageState extends State<MostrarCitasPage> {
-  // Usamos listas de estado y un Future<void> para la carga
   Future<void>? _loadFuture;
   List<Map<String, dynamic>> _citasHoy = [];
   List<Map<String, dynamic>> _citasProximas = [];
   List<Map<String, dynamic>> _citasPasadas = [];
   List<Map<String, dynamic>> _citasSinFecha = [];
-
-  // --- MÉTODOS DE PARSEO ---
 
   TimeOfDay? _parseHora(String? horaString) {
     if (horaString == null || horaString.isEmpty) return null;
@@ -1359,18 +1346,14 @@ class _MostrarCitasPageState extends State<MostrarCitasPage> {
     return fallback;
   }
 
-  // --- LÓGICA DE DATOS ---
-
   Future<void> _fetchAndSortCitas() async {
     final citas = await DB.mostrarCitasConPersona();
     final now = DateTime.now();
-    // Usamos una fecha "limpia" (medianoche) para comparar solo el día
     final todayDate = DateTime(now.year, now.month, now.day);
 
     final farFuture = DateTime(9999);
     final farPast = DateTime(1900);
 
-    // Listas temporales para clasificación
     final List<Map<String, dynamic>> todayEvents = [];
     final List<Map<String, dynamic>> pastEvents = [];
     final List<Map<String, dynamic>> futureEvents = [];
@@ -1383,21 +1366,19 @@ class _MostrarCitasPageState extends State<MostrarCitasPage> {
         continue;
       }
 
-      // 1. Comparamos si la FECHA es la de hoy
       bool esHoy = fecha.year == todayDate.year &&
           fecha.month == todayDate.month &&
           fecha.day == todayDate.day;
 
       if (esHoy) {
         todayEvents.add(cita);
-        continue; // La cita es de hoy, no la procesamos como futura o pasada
+        continue;
       }
 
-      // 2. Si no es de hoy, verificamos si es futura o pasada
       final TimeOfDay? hora = _parseHora(cita['HORA']);
       final DateTime dt = hora != null
           ? DateTime(fecha.year, fecha.month, fecha.day, hora.hour, hora.minute)
-          : DateTime(fecha.year, fecha.month, fecha.day, 23, 59); // Hora de 'fallback' para citas sin hora
+          : DateTime(fecha.year, fecha.month, fecha.day, 23, 59);
 
       if (dt.isBefore(now)) {
         pastEvents.add(cita);
@@ -1406,7 +1387,6 @@ class _MostrarCitasPageState extends State<MostrarCitasPage> {
       }
     }
 
-    // --- Ordenamos las listas ---
     todayEvents.sort((a, b) {
       final DateTime dtA = _getCombinedDateTime(a, farFuture);
       final DateTime dtB = _getCombinedDateTime(b, farFuture);
@@ -1425,7 +1405,6 @@ class _MostrarCitasPageState extends State<MostrarCitasPage> {
       return dtB.compareTo(dtA);
     });
 
-    // Actualizamos el estado con las listas clasificadas
     if (mounted) {
       setState(() {
         _citasHoy = todayEvents;
@@ -1439,53 +1418,49 @@ class _MostrarCitasPageState extends State<MostrarCitasPage> {
   @override
   void initState() {
     super.initState();
-    // Asignamos el Future a nuestra variable de estado
     _loadFuture = _fetchAndSortCitas();
   }
 
   void _recargarCitas() {
     setState(() {
-      // Limpiamos listas para que muestre el 'loading'
       _citasHoy = [];
       _citasProximas = [];
       _citasPasadas = [];
       _citasSinFecha = [];
-      // Volvemos a ejecutar el Future de carga
       _loadFuture = _fetchAndSortCitas();
     });
   }
 
-  // --- WIDGETS DE CONSTRUCCIÓN (MODIFICADOS PARA "GRITAR") ---
+
 
   Widget _buildCitaTile(Map<String, dynamic> c, {bool esDestacada = false}) {
     if (esDestacada) {
-      // --- ESTILO "IDIOTA, MIRA AQUÍ" ---
       return Card(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        color: Colors.teal.shade50, // Un fondo más notable
+        color: Colors.teal.shade50,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: _primaryColor, width: 2), // Borde más grueso
+          side: BorderSide(color: _primaryColor, width: 2),
         ),
-        elevation: 4, // Más sombra
+        elevation: 4,
         child: ListTile(
-          leading: CircleAvatar( // <-- CAMBIO: Círculo llamativo
+          leading: CircleAvatar(
             backgroundColor: _primaryColor,
             foregroundColor: Colors.white,
-            child: const Icon(Icons.today_rounded, size: 28), // Icono grande dentro
+            child: const Icon(Icons.today_rounded, size: 28),
           ),
           title: Text(
               "${c['LUGAR']}",
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 17, // Ligeramente más grande
+                  fontSize: 17,
                   color: Colors.black87
               )
           ),
           subtitle: Text(
             "${c['NOMBRE_PERSONA']} - ${c['HORA'] ?? ''} (${c['FECHA'] ?? ''})",
             style: const TextStyle(
-                fontWeight: FontWeight.w500, // Subtítulo más grueso
+                fontWeight: FontWeight.w500,
                 color: Colors.black54
             ),
           ),
@@ -1517,7 +1492,6 @@ class _MostrarCitasPageState extends State<MostrarCitasPage> {
       );
     }
 
-    // --- ESTILO NORMAL ---
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -1554,7 +1528,6 @@ class _MostrarCitasPageState extends State<MostrarCitasPage> {
     );
   }
 
-  // Widget para construir los títulos de cada sección
   Widget _buildSectionHeader(String title) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 10),
@@ -1571,18 +1544,15 @@ class _MostrarCitasPageState extends State<MostrarCitasPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Usamos FutureBuilder<void> que observa nuestro Future de carga
     return FutureBuilder<void>(
       future: _loadFuture,
       builder: (context, snapshot) {
 
-        // Comprobamos si, una vez cargado, todas las listas están vacías
         final bool isEmpty = _citasHoy.isEmpty &&
             _citasProximas.isEmpty &&
             _citasPasadas.isEmpty &&
             _citasSinFecha.isEmpty;
 
-        // Caso 1: Aún cargando
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             appBar: AppBar(
@@ -1594,7 +1564,6 @@ class _MostrarCitasPageState extends State<MostrarCitasPage> {
           );
         }
 
-        // Caso 2: Carga terminada, pero no hay datos
         if (isEmpty) {
           return Scaffold(
             appBar: AppBar(
@@ -1606,34 +1575,27 @@ class _MostrarCitasPageState extends State<MostrarCitasPage> {
           );
         }
 
-        // Caso 3: Carga terminada y hay datos
         return Scaffold(
           appBar: AppBar(
             title: const Text("Citas"),
             backgroundColor: _primaryColor,
             foregroundColor: Colors.white,
           ),
-          // Usamos un ListView simple que contendrá nuestras secciones
           body: ListView(
             padding: const EdgeInsets.all(8),
             children: [
-              // --- SECCIÓN "HOY" ---
               if (_citasHoy.isNotEmpty)
                 _buildSectionHeader("Citas del Día de Hoy"),
-              // Pasamos 'esDestacada: true'
               ..._citasHoy.map((c) => _buildCitaTile(c, esDestacada: true)),
 
-              // --- SECCIÓN "PRÓXIMAS" ---
               if (_citasProximas.isNotEmpty)
                 _buildSectionHeader("Próximas Citas"),
               ..._citasProximas.map((c) => _buildCitaTile(c)),
 
-              // --- SECCIÓN "PASADAS" ---
               if (_citasPasadas.isNotEmpty)
                 _buildSectionHeader("Citas Pasadas"),
               ..._citasPasadas.map((c) => _buildCitaTile(c)),
 
-              // --- SECCIÓN "SIN FECHA" ---
               if (_citasSinFecha.isNotEmpty)
                 _buildSectionHeader("Citas sin Fecha"),
               ..._citasSinFecha.map((c) => _buildCitaTile(c)),
